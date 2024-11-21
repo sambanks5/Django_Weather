@@ -1,7 +1,6 @@
 /* styles.css */
 body {
     font-family: Helvetica, sans-serif;
-    background-color: #f0f0f0;
     margin: 0;
     padding: 20px;
     display: flex;
@@ -16,7 +15,7 @@ body {
     flex-direction: column;
 }
 
-.weather-info{
+.weather-info {
     display: flex;
     align-items: center;
     text-align: center;
@@ -47,6 +46,7 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
