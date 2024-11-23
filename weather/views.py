@@ -10,6 +10,7 @@ def index(request):
     city = request.GET.get('city', '')
     lat = request.GET.get('lat', '')
     lon = request.GET.get('lon', '')
+    
 
     if not city and not (lat and lon):
         context = {

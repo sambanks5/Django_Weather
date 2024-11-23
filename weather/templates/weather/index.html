@@ -1,86 +1,97 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Weather App</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'weather/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-    <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
+	<head>
+		<title>Weather App</title>
+		{% load static %}
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'weather/styles.css' %}" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" />
+		<script>
+			function getLocation() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(showPosition, showError);
+				} else {
+					alert("Geolocation is not supported by this browser.");
+				}
+			}
 
-        function showPosition(position) {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            window.location.href = `?lat=${lat}&lon=${lon}`;
-        }
+			function showPosition(position) {
+				const lat = position.coords.latitude;
+				const lon = position.coords.longitude;
+				window.location.href = `?lat=${lat}&lon=${lon}`;
+			}
 
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    window.location.href = `?city=London`;
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.");
-                    break;
-            }
-        }
+			function showError(error) {
+				switch (error.code) {
+					case error.PERMISSION_DENIED:
+						window.location.href = `?city=London`;
+						break;
+					case error.POSITION_UNAVAILABLE:
+						alert("Location information is unavailable.");
+						break;
+					case error.TIMEOUT:
+						alert("The request to get user location timed out.");
+						break;
+					case error.UNKNOWN_ERROR:
+						alert("An unknown error occurred.");
+						break;
+				}
+			}
 
-        document.addEventListener("DOMContentLoaded", function() {
-            if (!window.location.search) {
-                getLocation();
-            }
-        });
-    </script>
-    <style>
-        body {
-            background-image: url("{{ google_maps_url|safe }}");
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-    </style>
-</head>
+			document.addEventListener("DOMContentLoaded", function () {
+				if (!window.location.search) {
+					getLocation();
+				}
+			});
+		</script>
+		<style>
+			body {
+				background-image: url("{{ google_maps_url|safe }}");
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+		</style>
+	</head>
 
-<body>
-    <!-- <h1>Weather App</h1> -->
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% elif weather_data %}
-    <div class="title">
-        <h2>Weather in {{ city }}</h2>
-        <h3>{{ lat }} {{ lon }}</h3>
-    </div>
-    <div class="weather-info">
-        <h3>{{ weather_data.current.temp }}°C - {{ weather_data.current.weather.0.description|capfirst }}</h3>
-        <p>
-            <i class="bi bi-droplet"></i> Humidity: {{ weather_data.current.humidity }}%
-        </p>
-        <p>
-            <i class="bi bi-wind"></i> Wind Speed: {{ weather_data.current.wind_speed }} m/s
-        </p>
-    </div>
-    {% else %}
-    <p>City not found or invalid input.</p>
-    {% endif %}
-    <div>
-        <form method="get" action=".">
-            <input type="text" id="city-input" name="city" placeholder="Enter city name">
-            <button onclick="getLocation()"><i class="bi bi-geo-alt"></i></button>
-            <button type="submit">Get Weather</button>
-        </form>
-    </div>
-</body>
+	<body>
+		<!-- <h1>Weather App</h1> -->
+		{% if error %}
+		<p style="color: red">{{ error }}</p>
+		{% elif weather_data %}
+		<div class="weather_container">
+			<div class="title">
+				<h2>Weather in {{ city }}</h2>
+				<h3>{{ lat }} {{ lon }}</h3>
+			</div>
+			<div class="weather-info">
+				<h3>{{ weather_data.current.temp }}°C - {{ weather_data.current.weather.0.description|capfirst }}</h3>
+				<p><i class="bi bi-droplet"></i> Humidity: {{ weather_data.current.humidity }}%</p>
+				<p><i class="bi bi-wind"></i> Wind Speed: {{ weather_data.current.wind_speed }} m/s</p>
+			</div>
+			{% else %}
+			<p>City not found or invalid input.</p>
+			{% endif %}
+			<div>
+				<form
+					method="get"
+					action=".">
+					<input
+						type="text"
+						id="city-input"
+						name="city"
+						placeholder="Enter city name" />
+					<button type="submit">Get Weather</button>
+                    <button onclick="getLocation()"><i class="bi bi-geo-alt"></i></button>
+				</form>
+			</div>
+		</div>
+	</body>
 </html>
